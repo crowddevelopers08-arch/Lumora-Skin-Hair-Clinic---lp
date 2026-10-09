@@ -1,0 +1,37 @@
+image: node:22
+
+stages:
+  - test
+  - external
+
+test-job:
+  stage: test
+  script:
+    - node -v
+    - npm -v
+    - echo "Pipeline works!"
+
+vercel-deploy:
+  stage: external
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+  script:
+    - npm i -g vercel
+    - vercel --version
+    - vercel whoami --token="$VERCEL_TOKEN"
+    - vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+
+    # ---- add these three lines ----
+    - corepack enable
+    - corepack prepare pnpm@10.0.0 --activate
+    - pnpm --version
+    # -------------------------------
+
+    - vercel build --prod --token="$VERCEL_TOKEN"
+    - vercel deploy --prebuilt --prod --yes --token="$VERCEL_TOKEN"
+
+
+
+    
+
+    

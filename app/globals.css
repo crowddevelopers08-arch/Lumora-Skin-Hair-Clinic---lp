@@ -1,0 +1,1465 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+
+@custom-variant dark (&:is(.dark *));
+
+/* ============================================================
+   Brand tokens sampled from the Elite Minima logo:
+     forest green  #17743C  (the "ELITE - MINIMA" wordmark)
+     royal purple  #513E98  (the EM monogram + tagline)
+     slate navy    #394B79  (the monogram's left stroke)
+     lavender wash #EEE9F7  (the flowing background ribbons)
+   Green carries the UI (primary actions, trust); purple is the
+   accent that ties surfaces back to the mark.
+   ============================================================ */
+:root {
+  --background: oklch(1 0 0); /* White background */
+  --foreground: oklch(0.19 0.024 260); /* Deep slate-navy ink #0E1626 */
+  --card: oklch(1 0 0); /* White card background */
+  --card-foreground: oklch(0.19 0.024 260);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.19 0.024 260);
+  --primary: oklch(0.47 0.126 152); /* Brand green #17743C */
+  --primary-foreground: oklch(1 0 0); /* White text on green */
+  --secondary: oklch(0.42 0.166 291); /* Brand purple #513E98 */
+  --secondary-foreground: oklch(1 0 0); /* White text on purple */
+  --muted: oklch(0.97 0.005 285); /* Faint lavender-grey surface */
+  --muted-foreground: oklch(0.51 0.024 260); /* AA muted text #5A6478 */
+  --accent: oklch(0.95 0.017 292); /* Lavender wash #F0ECFA */
+  --accent-foreground: oklch(0.35 0.14 291); /* Deep purple on wash */
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.92 0.006 275); /* Neutral hairline #E5E7EF */
+  --input: oklch(1 0 0);
+  --ring: oklch(0.47 0.126 152); /* Green focus ring */
+  --chart-1: oklch(0.47 0.126 152); /* green */
+  --chart-2: oklch(0.42 0.166 291); /* purple */
+  --chart-3: oklch(0.42 0.075 265); /* slate navy */
+  --chart-4: oklch(0.6 0.11 155); /* light green */
+  --chart-5: oklch(0.63 0.12 293); /* light purple */
+  --radius: 0.625rem;
+  --sidebar: oklch(0.98 0.004 285);
+  --sidebar-foreground: oklch(0.19 0.024 260);
+  --sidebar-primary: oklch(0.47 0.126 152);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.95 0.017 292);
+  --sidebar-accent-foreground: oklch(0.35 0.14 291);
+  --sidebar-border: oklch(0.92 0.006 275);
+  --sidebar-ring: oklch(0.47 0.126 152);
+}
+
+.dark {
+  --background: oklch(0.19 0.024 260); /* Deep slate-navy ink */
+  --foreground: oklch(1 0 0); /* White text */
+  --card: oklch(0.24 0.026 262);
+  --card-foreground: oklch(1 0 0);
+  --popover: oklch(0.24 0.026 262);
+  --popover-foreground: oklch(1 0 0);
+  --primary: oklch(0.62 0.132 152); /* Lifted green, readable on dark */
+  --primary-foreground: oklch(0.19 0.024 260);
+  --secondary: oklch(0.72 0.113 293); /* Lifted purple #B9A7E8 */
+  --secondary-foreground: oklch(0.19 0.024 260);
+  --muted: oklch(0.27 0.024 262);
+  --muted-foreground: oklch(0.74 0.014 275);
+  --accent: oklch(0.32 0.048 288);
+  --accent-foreground: oklch(0.86 0.06 293);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.32 0.022 265);
+  --input: oklch(0.24 0.026 262);
+  --ring: oklch(0.62 0.132 152);
+  --chart-1: oklch(0.62 0.132 152);
+  --chart-2: oklch(0.72 0.113 293);
+  --chart-3: oklch(0.66 0.078 265);
+  --chart-4: oklch(0.76 0.115 155);
+  --chart-5: oklch(0.83 0.075 293);
+  --sidebar: oklch(0.24 0.026 262);
+  --sidebar-foreground: oklch(1 0 0);
+  --sidebar-primary: oklch(0.62 0.132 152);
+  --sidebar-primary-foreground: oklch(0.19 0.024 260);
+  --sidebar-accent: oklch(0.32 0.048 288);
+  --sidebar-accent-foreground: oklch(0.86 0.06 293);
+  --sidebar-border: oklch(0.32 0.022 265);
+  --sidebar-ring: oklch(0.62 0.132 152);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-lato), sans-serif;
+  }
+}
+
+/* Added custom animations for advanced landing page effects */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.8s ease-out forwards;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.8s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.6s ease-out forwards;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animation-delay-200 {
+  animation-delay: 0.2s;
+}
+
+.animation-delay-400 {
+  animation-delay: 0.4s;
+}
+
+.animation-delay-600 {
+  animation-delay: 0.6s;
+}
+
+.animation-delay-800 {
+  animation-delay: 0.8s;
+}
+
+/* ============================================================
+   ELITE MINIMA — Piles / Proctology landing page
+   Scoped design system under .elite. A flat, modern SaaS-style
+   system (Lato only, thin borders, soft shadows) built on the
+   logo's own colours.
+   Palette: white · slate-navy ink · forest green #17743C
+            · royal purple #513E98 · lavender wash
+   Type:    Lato (single family — 400 / 700 / 900)
+   ============================================================ */
+.elite {
+  --e-ink: #0e1626;      /* slate-navy black, echoes the monogram's left stroke */
+  --e-ink-soft: #23304a;
+  --e-muted: #5a6478;    /* 5.9:1 on white — AA body text */
+  --e-line: #e5e7ef;
+  --e-line-soft: #eff0f6;
+  --e-paper: #ffffff;
+  --e-canvas: #f8f7fb;   /* faintest lavender, from the logo's ribbon wash */
+
+  /* Green — the wordmark colour. Primary actions, trust marks, icons. */
+  --e-green: #17743c;       /* 5.9:1 on white — AA */
+  --e-green-deep: #0f5a2d;  /* hover / heading green — 8.3:1 */
+  --e-green-soft: #e7f4ec;
+  --e-green-line: #c8e4d3;
+
+  /* Purple — the EM monogram colour. Accent surfaces, secondary emphasis. */
+  --e-purple: #513e98;      /* 8.4:1 on white — AA large + normal */
+  --e-purple-deep: #3a2b72;
+  --e-purple-soft: #f0ecfa;
+  --e-purple-line: #d9cff2;
+  --e-purple-light: #b9a7e8; /* for use on the dark ink footer */
+
+  /* Slate navy — the monogram's cool half. Charts, subtle dividers. */
+  --e-slate: #394b79;
+
+  --font-elite: var(--font-lato), sans-serif;
+
+  font-family: var(--font-elite);
+  background: var(--e-paper);
+  color: var(--e-ink);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+/* Lumora Skin & Hair Clinic — re-skins .elite with the logo's palette.
+   Applied alongside .elite (class="elite lumora"); it only swaps the tokens,
+   so every .elite rule keeps working. The green/purple names are kept so the
+   shared components need no changes: "green" is the primary brown, "purple"
+   is the caramel accent (stars, rating chip).
+   Sampled from public/logo.jpeg: espresso #412519 · cream #f6e9da. */
+.elite.lumora {
+  --e-ink: #2e1a11;
+  --e-ink-soft: #4a2e20;
+  --e-muted: #6e5a4d;    /* ~6:1 on cream — AA body text */
+  --e-line: #e6d6c5;
+  --e-line-soft: #efe3d6;
+  --e-paper: #f7ecdf;    /* logo background cream, so the jpeg blends in */
+  --e-canvas: #fdf8f2;
+
+  --e-green: #6b4430;       /* primary brown — ~7.5:1 on cream */
+  --e-green-deep: #412519;  /* espresso, the wordmark colour */
+  --e-green-soft: #f1e2d2;
+  --e-green-line: #dcc3ab;
+
+  --e-purple: #b98348;      /* caramel accent, for stars */
+  --e-purple-deep: #7a4f26;
+  --e-purple-soft: #f6e7d4;
+  --e-purple-line: #e3c9a8;
+  --e-purple-light: #dcb98e;
+
+  --e-slate: #8a6a55;
+}
+
+.elite h1,
+.elite h2,
+.elite h3,
+.elite .display {
+  font-family: var(--font-elite);
+  letter-spacing: -0.025em;
+  color: var(--e-ink);
+  font-weight: 700;
+}
+.elite h1 {
+  font-size: clamp(2rem, 1.25rem + 2.6vw, 3rem);
+  line-height: 1.15;
+}
+.elite h2 {
+  font-size: clamp(1.75rem, 1.2rem + 1.9vw, 2.5rem);
+  line-height: 1.2;
+}
+.elite h3 {
+  font-weight: 600;
+  line-height: 1.3;
+}
+.elite input,
+.elite select,
+.elite textarea {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.elite footer {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+.elite :focus-visible {
+  outline: 2px solid var(--e-green);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+.elite ::selection {
+  background: var(--e-green-soft);
+  color: var(--e-green-deep);
+}
+
+/* Anchor landing offset — single source of truth for nav routing.
+   The header is sticky (80px desktop / 68px mobile), so anything jumped to from
+   the navbar has to clear it. This covers the paths Lenis never sees: a hash URL
+   opened directly (/#faq), a reduced-motion visit, and any no-JS fallback.
+   SmoothScroll.tsx reads this same value back so the two can't drift apart. */
+.elite section[id],
+.elite #book {
+  scroll-margin-top: 6rem;
+}
+
+/* eyebrow / section kicker */
+.elite .kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--e-green-deep);
+}
+/* the dash runs green → purple, a small echo of the monogram's gradient */
+.elite .kicker::before {
+  content: "";
+  width: 20px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--e-green), var(--e-purple));
+}
+
+/* Section heading underline — the stroke draws itself on once the enclosing
+   <Reveal> flips to .in, holds, wipes off to the right, then repeats forever.
+   The loop starts on reveal rather than on load, so a heading never animates
+   before the reader has reached it. */
+.elite .title-underline {
+  clip-path: inset(0 100% 0 0);
+}
+.elite .reveal.in .title-underline {
+  animation: elite-underline-loop 3.4s 0.25s infinite;
+}
+/* the hero enters via .rise on load, not via the IntersectionObserver's .in,
+   so it needs its own trigger — only the start delay differs */
+.elite .rise .title-underline {
+  animation: elite-underline-loop 3.4s 0.55s infinite;
+}
+@keyframes elite-underline-loop {
+  /* draw on, left → right (0.88s) */
+  0% {
+    clip-path: inset(0 100% 0 0);
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  /* fully drawn, then held for ~1.5s */
+  26%,
+  70% {
+    clip-path: inset(0 0 0 0);
+    animation-timing-function: cubic-bezier(0.55, 0, 0.85, 0.3);
+  }
+  /* wipe off the way it came in, then a short beat of nothing. Both this state
+     and 0% are invisible, so the wrap back to the start is never seen. */
+  92%,
+  100% {
+    clip-path: inset(0 0 0 100%);
+  }
+}
+
+/* primary + ghost buttons */
+.elite .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: clamp(0.9375rem, 0.9rem + 0.16vw, 1rem);
+  line-height: 1;
+  padding: 14px 28px;
+  transition: transform 0.2s ease, box-shadow 0.25s ease, background 0.25s ease,
+    color 0.2s ease, border-color 0.2s ease;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+}
+.elite .btn-primary {
+  background: var(--e-green);
+  color: #fff;
+  box-shadow: 0 12px 28px -12px rgba(23, 116, 60, 0.5);
+}
+.elite .btn-primary:hover {
+  background: var(--e-green-deep);
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px -14px rgba(23, 116, 60, 0.6);
+}
+.elite .btn-purple {
+  background: var(--e-purple);
+  color: #fff;
+  box-shadow: 0 12px 28px -12px rgba(81, 62, 152, 0.5);
+}
+.elite .btn-purple:hover {
+  background: var(--e-purple-deep);
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px -14px rgba(81, 62, 152, 0.6);
+}
+.elite .btn-ghost {
+  background: #fff;
+  color: var(--e-ink);
+  border-color: var(--e-line);
+}
+.elite .btn-ghost:hover {
+  border-color: var(--e-green);
+  color: var(--e-green-deep);
+  transform: translateY(-2px);
+}
+
+/* flat, bordered card — no skeuomorphic gradients */
+.elite .card {
+  background: #fff;
+  border: 1px solid var(--e-line);
+  border-radius: 20px;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.3s ease, border-color 0.25s ease;
+}
+.elite .card:hover {
+  transform: translateY(-4px);
+  border-color: var(--e-green-line);
+  box-shadow: 0 24px 44px -30px rgba(14, 22, 38, 0.25);
+}
+
+/* marquee strip — the track is rendered twice, so wrapping at -50% loops seamlessly */
+.elite .marquee {
+  display: flex;
+  width: max-content;
+  animation: elite-marquee var(--marquee-duration, 30s) linear infinite;
+}
+.elite .marquee:hover,
+.elite .marquee:focus-within {
+  animation-play-state: paused;
+}
+@keyframes elite-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* the rail clips the over-wide track; without this the fade mask below would
+   tile across the overflow instead of sitting on the visible edges */
+.elite .marquee-rail {
+  overflow: hidden;
+}
+
+/* soft dissolve at both ends of a marquee rail, instead of a hard clip */
+.elite .marquee-fade {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 4%, #000 94%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* the animation is switched off above, so hand scrolling back to the reader
+     and drop the duplicate track that only existed to make the loop seamless */
+  .elite .marquee-rail {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  .elite .marquee-fade {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .elite .marquee-dup {
+    display: none;
+  }
+}
+
+/* ============================================================
+   ELITE MINIMA — Circumcision landing page  (/circumcision)
+
+   Scoped design system under .circ. The structure is .gyn's
+   editorial treatment — square corners, hairline rules, outlined
+   numerals, underlined form fields, uppercase headings, bands
+   alternating between two grounds — but light rather than dark.
+
+   It was dark, on a plum near-black mixed from the logo's purple.
+   The client read the page as too heavy; it was lifted once, and
+   then inverted outright to the white theme it is now. The
+   inversion was done here, on the tokens, rather than in the
+   sections — every band, card, rule and field turns over from
+   this block, and the `tone="ink" | "dark"` prop each section
+   uses to pick a half still resolves correctly.
+
+   What keeps it from becoming .elite, which is the white theme /
+   and /piles already wear:
+
+     tint     nothing on this page is neutral grey. The ground is
+              white, and every tone above it — bands, cards,
+              hairlines, the footer — is mixed toward the logo's
+              #513E98.
+     accent   violet leads: eyebrows, numerals, the marked word,
+              the rules. Green is kept for actions only, which is
+              the brand's own division of the two.
+     texture  diagonal hairlines, where .elite has none.
+     index    every band is numbered 01–07 in an outlined
+              numeral, so the seven sections of the content deck
+              are legible as a sequence while scrolling.
+
+   Type is Lato, the site's only face, as everywhere else.
+   ============================================================ */
+
+/* The rules below sit inside Tailwind's cascade layers, not outside them.
+   Unlayered CSS beats every layered rule regardless of specificity, so an
+   unlayered `.circ h2 { color }` would win against `text-white` and any other
+   utility aimed at a heading. In `base` and `components`, utilities override
+   these the normal way. */
+
+@layer base {
+  .circ {
+    /* ── Paper ──────────────────────────────────────────────────────────
+       The page's ground, and the two tones stacked on it. This page ran on a
+       plum near-black until the client asked for a white theme; what follows
+       is that inversion, done on the tokens rather than in the components, so
+       every band, card, rule and field turned over at once.
+
+       The ground is plain white and everything above it is tinted toward the
+       logo's #513E98 rather than toward grey. That tint is the whole reason
+       the page still reads as itself: a neutral-grey light theme here would be
+       indistinguishable from `.elite`, which is what / and /piles wear. */
+    --c-base: #ffffff;      /* the ground */
+    --c-surface: #f6f4fc;   /* raised band inside the white */
+    --c-raised: #efebf8;    /* cards and inputs */
+    --c-line: #ddd8ee;      /* hairline, and the gap fill in `gap-px` grids */
+    /* Not a hairline: this draws the form's field underlines and the outlined
+       button's border, so it is held at 3.9:1 on white — a boundary a visitor
+       has to be able to find, not a decorative rule. */
+    --c-line-strong: #847ba6;
+    --c-text: #1c1832;      /* 17.1:1 on white */
+    --c-dim: #5a5477;       /* 7.1:1 on white — AA body */
+    /* The footer, and only the footer: the deepest tint on the page, so it
+       still closes the page the way the near-black slab used to. */
+    --c-deep: #dcd7ee;
+    /* The hero band. Its own token rather than an alias of --c-bone: the hero
+       is the one band that gets re-tinted on its own, and pointing it at
+       --c-bone would drag sections 01 and 04 along with it every time.
+
+       A step deeper than --c-bone, and that step is load-bearing. Section 01
+       sits directly under the hero and is painted --c-bone; at the same value
+       the two grounds would run together into one tinted region with no seam,
+       and the hero would read as having no bottom. */
+    --c-hero: #e9e5f4;
+
+    /* ── The alternating band ────────────────────────────────────────────
+       Sections 01 and 04 sit a step deeper than the ground so the page keeps
+       the light/dark rhythm it was built around — the alternation survived the
+       inversion, it just happens between two light tones now.
+
+       These kept the `bone` and `ink` names through the change. Every section
+       selects between the two halves with `tone="ink" | "dark"`, and renaming
+       the tokens would have meant rewriting that prop in all seven of them for
+       no visual difference. They are no longer warm, though: a warm off-white
+       against a white ground is a smudge, where the violet tint reads as a
+       deliberate band. */
+    --c-bone: #efecf8;
+    --c-bone-2: #e4e0f2;
+    --c-bone-line: #c6bde0;
+    /* Both halves are light now, so the band ink and the ground ink are the
+       same two values. Kept as separate tokens rather than collapsed: the
+       `tone` prop still has to resolve to something in every section. */
+    --c-ink: #1c1832;
+    --c-ink-dim: #5a5477;
+
+    /* ── Violet ──────────────────────────────────────────────────────────
+       Still leads — eyebrows, numerals, the marked word, the rules. The logo's
+       own #513E98 carries it now; the lifted tint that used to be needed for
+       legibility on near-black would vanish on white. */
+    --c-violet: #513e98;
+    /* The one exception, and the only light value left in the palette: the
+       photo scrims in sections 02 and 03 are still dark, because they sit on
+       photographs rather than on the page, and the eyebrow and numeral drawn
+       on them need a tint that survives there. */
+    --c-violet-soft: #cdbff0;
+    --c-violet-deep: #3d2d78;
+
+    /* ── Green ───────────────────────────────────────────────────────────
+       The action colour and nothing else, as before — but deep rather than
+       lifted, because it now has to hold against white both as a solid button
+       ground under white text and as a tick beside body copy. */
+    --c-green: #17743c;
+    --c-green-soft: #0f5c2e;  /* the solid button's hover — deeper, not softer */
+    --c-green-deep: #17743c;
+
+    background: var(--c-base);
+    color: var(--c-text);
+    font-family: var(--font-lato), sans-serif;
+    font-size: 16px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+    /* clip, not hidden: `hidden` on a scroll container would break the sticky
+       header. Everything wide on this page scrolls inside its own row. */
+    overflow-x: clip;
+  }
+
+  /* Uppercase and tightly leaded is what separates these headings from
+     .elite's sentence case — the face is Lato either way. `color: inherit`
+     so a heading on a bone band takes the band's ink without a second rule. */
+  .circ h1,
+  .circ h2,
+  .circ h3,
+  .circ h4,
+  .circ .c-display {
+    font-family: var(--font-lato), sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -0.005em;
+    line-height: 1.1;
+    color: inherit;
+  }
+  .circ h1 {
+    font-size: clamp(1.9rem, 1.15rem + 3vw, 3.4rem);
+  }
+  .circ h2 {
+    font-size: clamp(1.5rem, 1.1rem + 1.7vw, 2.4rem);
+  }
+  .circ h3 {
+    font-size: clamp(1rem, 0.94rem + 0.35vw, 1.25rem);
+    letter-spacing: 0.015em;
+    line-height: 1.2;
+  }
+  .circ h4 {
+    font-size: 0.95rem;
+    letter-spacing: 0.06em;
+  }
+
+  .circ :focus-visible {
+    outline: 2px solid var(--c-violet);
+    outline-offset: 3px;
+    border-radius: 0;
+  }
+  .circ ::selection {
+    background: var(--c-violet);
+    color: #fff;
+  }
+
+  /* Anchor landing offset. The header is sticky, so anything jumped to from
+     the nav has to clear it. SmoothScroll.tsx reads this value back off the
+     target, which covers the paths Lenis never sees — a hash URL opened
+     directly, a reduced-motion visit, and the no-JS fallback. */
+  .circ section[id],
+  .circ #book {
+    scroll-margin-top: 5.5rem;
+  }
+}
+
+@layer components {
+  /* ── Eyebrow ────────────────────────────────────────────────────────────
+     The band's index and its name: "01 ─── Hero". .gyn prints a bare rule
+     before its label; the numeral is this page's addition, and it is what
+     makes the deck's seven sections countable on the way down.
+     `--c-eyebrow-color` lets the bone bands re-tint without a second rule. */
+  .circ .c-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+    color: var(--c-eyebrow-color, var(--c-violet));
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.28em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .circ .c-eyebrow::after {
+    content: "";
+    width: 26px;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.55;
+  }
+  .circ .c-eyebrow-n {
+    font-variant-numeric: tabular-nums;
+    opacity: 0.75;
+  }
+  /* A step deeper on the tinted bands, so the eyebrow holds its weight
+     against a ground that is itself a step deeper than white. */
+  .circ .c-eyebrow--ink {
+    --c-eyebrow-color: var(--c-violet-deep);
+  }
+
+  /* ── Buttons ────────────────────────────────────────────────────────────
+     Square, tracked, uppercase — .gyn's silhouette. What differs is which
+     colour fills them: green, always, because that is the brand's action
+     colour and the violet is spoken for. */
+  .circ .c-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    /* 44px minimum touch target, every breakpoint. */
+    min-height: 46px;
+    padding: 14px 26px;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    font-family: inherit;
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    line-height: 1;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease,
+      transform 0.25s ease;
+  }
+  .circ .c-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+    transform: none;
+  }
+  .circ .c-btn:not(:disabled):hover {
+    transform: translateY(-2px);
+  }
+
+  .circ .c-btn-solid {
+    background: var(--c-green);
+    color: #fff;
+  }
+  .circ .c-btn-solid:not(:disabled):hover {
+    background: var(--c-green-soft);
+  }
+  .circ .c-btn-line {
+    border-color: var(--c-line-strong);
+    color: var(--c-text);
+  }
+  .circ .c-btn-line:not(:disabled):hover {
+    border-color: var(--c-violet);
+    color: var(--c-violet);
+  }
+  /* The same two, inverted for the bone bands. */
+  .circ .c-btn-ink {
+    background: var(--c-ink);
+    color: var(--c-bone);
+  }
+  .circ .c-btn-ink:not(:disabled):hover {
+    background: var(--c-violet-deep);
+  }
+  /* --c-line-strong, not --c-bone-line: this is a button's edge and has to
+     clear 3:1, where the bone hairline sits at 1.5:1. */
+  .circ .c-btn-ink-line {
+    border-color: var(--c-line-strong);
+    color: var(--c-ink);
+  }
+  .circ .c-btn-ink-line:not(:disabled):hover {
+    border-color: var(--c-ink);
+  }
+
+  /* ── Outlined numeral ───────────────────────────────────────────────────
+     The section and step index, drawn as an outline so a very large number
+     can sit near copy without competing with it. */
+  .circ .c-numeral {
+    font-family: var(--font-lato), sans-serif;
+    font-weight: 700;
+    line-height: 0.8;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--c-line-strong);
+  }
+  .circ .c-numeral--ink {
+    -webkit-text-stroke-color: var(--c-bone-line);
+  }
+  /* The lit numeral, used once: on the dark photo scrim of an option card.
+     It takes the light tint rather than the leading violet for that reason. */
+  .circ .c-numeral--on {
+    color: var(--c-violet-soft);
+    -webkit-text-stroke-color: var(--c-violet-soft);
+  }
+
+  /* ── Underlined form fields ─────────────────────────────────────────────
+     No boxes. The field is a baseline the value sits on — .gyn's treatment,
+     kept, because a boxed input would drag the page back toward .elite. */
+  .circ .c-form {
+    /* The native date picker and the select popup take their chrome from
+       this. It said `dark` while the page was one. */
+    color-scheme: light;
+  }
+  .circ .c-field {
+    width: 100%;
+    min-width: 0;
+    /* 44px target — the floor, not a starting point: the rows are tightened
+       to keep the whole form inside the hero panel and this is as short as an
+       input may get and still be reliably tappable. `appearance:none` because
+       iOS Safari sizes a bare select from its own content and ignores
+       width:100%. */
+    min-height: 44px;
+    padding: 8px 2px;
+    border: 0;
+    border-bottom: 1px solid var(--c-line-strong);
+    border-radius: 0;
+    background: transparent;
+    color: var(--c-text);
+    font-family: inherit;
+    font-size: 0.95rem;
+    appearance: none;
+    transition: border-color 0.2s ease;
+  }
+  .circ .c-field::placeholder {
+    color: #726c88;
+  }
+  .circ .c-field:focus {
+    outline: none;
+    border-bottom-color: var(--c-violet);
+  }
+  .circ .c-field option {
+    background: var(--c-raised);
+    color: var(--c-text);
+  }
+  /* `:user-invalid`, not `:invalid` — the latter matches a required field that
+     has simply not been filled in yet, so every empty field would be flagged
+     before the visitor had typed anything. It is also the only form that
+     behaves on a <select>, where `:placeholder-shown` never matches. */
+  .circ .c-field:user-invalid {
+    border-bottom-color: #c53b34;
+  }
+  /* The select's own arrow, drawn here so it survives appearance:none. */
+  .circ .c-select {
+    padding-right: 26px;
+    background-image: linear-gradient(45deg, transparent 50%, var(--c-dim) 50%),
+      linear-gradient(135deg, var(--c-dim) 50%, transparent 50%);
+    background-position: calc(100% - 11px) calc(50% + 1px), calc(100% - 6px) calc(50% + 1px);
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+  }
+  .circ .c-label {
+    display: block;
+    color: var(--c-dim);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  /* ── Texture ────────────────────────────────────────────────────────────
+     Diagonal hairlines where .gyn rules a square grid. Nearly invisible now
+     that they are drawn in --c-line on white — which is the intent: it is a
+     grain in the paper, and at the old contrast it would be a cage. */
+  .circ .c-tex {
+    background-image: repeating-linear-gradient(
+      135deg,
+      var(--c-line) 0 1px,
+      transparent 1px 22px
+    );
+  }
+
+  /* ── Marquee ────────────────────────────────────────────────────────────
+     A row that scrolls itself, forever — the gynecomastia page's review
+     carousel, kept, because it is the right control for a set of quotes: there
+     is no "current" one to point a dot at.
+
+     The track holds the same set of cards twice and slides exactly one set's
+     width, so the moment it wraps back to 0 the second set is sitting where
+     the first was and the seam is invisible.
+
+     That only holds if half the track is exactly one set: the gap between
+     cards is a margin on each card rather than a `gap` on the track, because a
+     track gap adds one extra gap between the two sets and nothing else, which
+     puts the loop out by half of it and shows as a small jump every lap.
+
+     Both edges are faded with a mask rather than covered by a gradient
+     overlay, so it keeps working whatever the band behind it is painted. Hover
+     or tab into the row and it holds still; under `prefers-reduced-motion` the
+     animation is stopped and the row becomes a plain horizontal scroller, so
+     the cards past the fold stay reachable. */
+  .circ .c-marquee {
+    --c-marquee-fade: clamp(1.25rem, 7vw, 7rem);
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent,
+      #000 var(--c-marquee-fade),
+      #000 calc(100% - var(--c-marquee-fade)),
+      transparent
+    );
+    mask-image: linear-gradient(
+      90deg,
+      transparent,
+      #000 var(--c-marquee-fade),
+      #000 calc(100% - var(--c-marquee-fade)),
+      transparent
+    );
+  }
+  .circ .c-marquee-track {
+    display: flex;
+    width: max-content;
+    animation: circ-marquee var(--c-marquee-duration, 56s) linear infinite;
+  }
+  .circ .c-marquee:hover .c-marquee-track,
+  .circ .c-marquee:focus-within .c-marquee-track {
+    animation-play-state: paused;
+  }
+
+  /* ── Marked word ────────────────────────────────────────────────────────
+     One word of the hero headline, highlighted. The pair is the same one
+     `::selection` uses, so it reads as that word being marked rather than as
+     a new colour arriving in the palette.
+
+     `box-decoration-break: clone` so the padding is drawn on both halves if
+     the mark wraps a line, instead of only on the ends of the run. */
+  .circ .c-mark {
+    background-color: var(--c-violet);
+    color: #fff;
+    padding: 0 0.12em;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+}
+
+/* Staggered entrance for the hero, mirroring .gyn's g-rise/g-dN pairing.
+   Deliberately CSS rather than an in-view observer: the hero is on screen at
+   load, and anything gated on an IntersectionObserver band can be scrolled
+   past without ever entering it — a page opened at a hash, or reloaded with a
+   restored scroll position, does exactly that and leaves the content stuck at
+   opacity 0. Nothing here waits on the viewport. */
+.circ .c-rise {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: circ-rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes circ-rise {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes circ-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.circ .c-d1 { animation-delay: 0.06s; }
+.circ .c-d2 { animation-delay: 0.16s; }
+.circ .c-d3 { animation-delay: 0.26s; }
+.circ .c-d4 { animation-delay: 0.36s; }
+.circ .c-d5 { animation-delay: 0.46s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .circ .c-rise {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+  /* The blanket rule below stops the marquee animating. Without these two the
+     row would then be a frozen strip with its overflow still hidden, so the
+     cards past the first screenful would be unreachable — it becomes a plain
+     horizontal scroller instead. */
+  .circ .c-marquee {
+    overflow-x: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .circ .c-marquee-track {
+    animation: none;
+  }
+  .circ *,
+  .circ *::before,
+  .circ *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .circ .c-btn:not(:disabled):hover {
+    transform: none;
+  }
+}
+
+/* hand-swiped card row. Phone-only, matching the `sm:` breakpoint where the
+   utilities on the row turn it back into a grid — above that there is nothing
+   to scroll and these rules would only fight the grid.
+
+   The scrollbar is hidden because the row is thumbed, and the bar only ever
+   showed up as a grey line under the cards; the partly visible next card is the
+   affordance instead. Keyboard and screen readers still reach every card — this
+   is real overflow, not a transform, so focus scrolls it into view.
+
+   overflow-y is pinned to hidden because a lone `overflow-x: auto` computes the
+   other axis to auto too, and the cards' entrance animation lifts them out of
+   the box on the way in. The row's bottom padding (cancelled by a matching
+   negative margin) is what keeps that clip off the card shadows. */
+@media (max-width: 639.98px) {
+  .elite .swipe-row {
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+  }
+  .elite .swipe-row::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* staggered hero entrance */
+.elite .rise {
+  opacity: 0;
+  transform: translateY(18px);
+  animation: elite-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes elite-rise {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.elite .d1 { animation-delay: 0.05s; }
+.elite .d2 { animation-delay: 0.14s; }
+.elite .d3 { animation-delay: 0.23s; }
+.elite .d4 { animation-delay: 0.32s; }
+.elite .d5 { animation-delay: 0.41s; }
+
+/* scroll reveal */
+.elite .reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.elite .reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+/* animated draw line for the treatment-journey timeline */
+.elite .draw-line {
+  transform-origin: top;
+  transform: scaleY(0);
+  transition: transform 1.1s ease;
+}
+.elite .draw-line.in {
+  transform: scaleY(1);
+}
+
+/* fine dot texture used behind section art */
+.elite .dot-tex {
+  background-image: radial-gradient(rgba(81, 62, 152, 0.16) 1.4px, transparent 1.4px);
+  background-size: 13px 13px;
+}
+
+/* Soft ribbon wash lifted from the logo's flowing lavender background.
+   Purely decorative — sits behind hero / CTA surfaces. */
+.elite .ribbon-wash {
+  background-image:
+    radial-gradient(60% 90% at 8% 0%, rgba(81, 62, 152, 0.09), transparent 62%),
+    radial-gradient(55% 85% at 96% 12%, rgba(81, 62, 152, 0.08), transparent 60%),
+    radial-gradient(70% 70% at 50% 108%, rgba(23, 116, 60, 0.07), transparent 60%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .elite .reveal,
+  .elite .rise,
+  .elite .draw-line {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    animation: none;
+  }
+  /* `.elite *` below kills the loop; this un-clips the stroke so it still
+     reads as a finished underline rather than staying hidden at frame 0 */
+  .elite .title-underline {
+    clip-path: none;
+  }
+  .elite * {
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================
+   ELITE MINIMA — Gynecomastia landing page  (/gynecomastia)
+   Scoped design system under .gyn. Deliberately shares NOTHING
+   with .elite above except the brand hues: where .elite is a
+   white, pill-shaped, soft-shadowed SaaS system, this one is a
+   dark editorial one — near-black surfaces cut by bone-white
+   bands, square corners, hairline rules, outlined numerals and
+   uppercase headings. Typeface is Lato, the site's only face,
+   same as .elite. Two pages already use .elite; a third wearing
+   it would have been the same page with different words.
+   ============================================================ */
+.gyn {
+  /* Dark half — the page's ground. */
+  --g-base: #080c14;      /* near-black navy, one step under .elite's ink */
+  --g-surface: #0e1524;   /* raised band inside the dark */
+  --g-raised: #141d2e;    /* cards / inputs on the dark */
+  --g-line: #1e2839;      /* hairline on dark */
+  --g-line-strong: #2c3853;
+  --g-text: #f4f6fa;
+  --g-dim: #9aa6bc;       /* 8.8:1 on --g-base — AA body on dark */
+
+  /* Bone half — the light bands that interrupt the dark. Warm, not white, so
+     it never reads as the same paper the other two pages are printed on. */
+  --g-bone: #f1f0ec;
+  --g-bone-2: #e7e5df;
+  --g-bone-line: #d6d3c9;
+  --g-ink: #0b1017;
+  --g-ink-dim: #4e5665;   /* 7.4:1 on bone */
+
+  /* Brand hues, re-mixed for a dark ground. Green stays the action colour;
+     the logo's #17743C is unreadable on near-black, so the lifted tint leads
+     and the original is kept for text on the bone bands. */
+  --g-accent: #3fbf77;
+  --g-accent-soft: #7bd6a3;
+  --g-accent-deep: #17743c;
+  --g-violet: #b9a7e8;
+  --g-violet-deep: #513e98;
+
+  --font-gyn-display: var(--font-lato), sans-serif;
+
+  background: var(--g-base);
+  color: var(--g-text);
+  font-family: var(--font-lato), sans-serif;
+  font-size: 16px;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+/* Display face. Lato, like the rest of the site — uppercase and tightly leaded
+   is what separates these headings from .elite's sentence case, not the face.
+   Sizes run below the old condensed setting: Lato is a normal-width face, so
+   the same font-size sets roughly a third wider on the line. */
+.gyn h1,
+.gyn h2,
+.gyn h3,
+.gyn h4,
+.gyn .g-display {
+  font-family: var(--font-gyn-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.005em;
+  line-height: 1.1;
+  color: inherit;
+}
+.gyn h1 {
+  font-size: clamp(1.85rem, 1.15rem + 2.8vw, 3.2rem);
+}
+.gyn h2 {
+  font-size: clamp(1.5rem, 1.1rem + 1.7vw, 2.35rem);
+}
+.gyn h3 {
+  font-size: clamp(1rem, 0.94rem + 0.35vw, 1.25rem);
+  letter-spacing: 0.015em;
+  line-height: 1.2;
+}
+.gyn h4 {
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+}
+
+.gyn :focus-visible {
+  outline: 2px solid var(--g-accent);
+  outline-offset: 3px;
+  border-radius: 0;
+}
+.gyn ::selection {
+  background: var(--g-accent);
+  color: #04140a;
+}
+
+/* Same anchor-landing contract as .elite — SmoothScroll reads this back off the
+   target, so the value has to live on the element, not in the script. */
+.gyn section[id],
+.gyn #book {
+  scroll-margin-top: 5.5rem;
+}
+
+/* ── Eyebrow ──────────────────────────────────────────────────────────────
+   A numbered index rather than .elite's gradient dash: "03 / Treatment". */
+.gyn .g-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--g-accent);
+}
+.gyn .g-eyebrow::before {
+  content: "";
+  width: 26px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.6;
+}
+.gyn .g-eyebrow--ink {
+  color: var(--g-accent-deep);
+}
+
+/* ── Buttons ──────────────────────────────────────────────────────────────
+   Square, tracked, uppercase. No radius, no drop shadow: the state change is
+   a 1px border and a fill, which is the whole vocabulary of this page. */
+.gyn .g-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  padding: 15px 26px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease,
+    transform 0.25s ease;
+}
+.gyn .g-btn-solid {
+  background: var(--g-accent);
+  color: #04140a;
+}
+.gyn .g-btn-solid:hover {
+  background: var(--g-accent-soft);
+  transform: translateY(-2px);
+}
+.gyn .g-btn-line {
+  border-color: var(--g-line-strong);
+  color: var(--g-text);
+}
+.gyn .g-btn-line:hover {
+  border-color: var(--g-accent);
+  color: var(--g-accent);
+  transform: translateY(-2px);
+}
+/* Same two buttons, inverted for the bone bands. */
+.gyn .g-btn-ink {
+  background: var(--g-ink);
+  color: var(--g-bone);
+}
+.gyn .g-btn-ink:hover {
+  background: var(--g-accent-deep);
+  transform: translateY(-2px);
+}
+.gyn .g-btn-ink-line {
+  border-color: var(--g-bone-line);
+  color: var(--g-ink);
+}
+.gyn .g-btn-ink-line:hover {
+  border-color: var(--g-ink);
+  transform: translateY(-2px);
+}
+.gyn .g-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+}
+
+/* ── Outlined numeral ─────────────────────────────────────────────────────
+   The section/step index, drawn as an outline so a very large number can sit
+   behind copy without competing with it. */
+.gyn .g-numeral {
+  font-family: var(--font-gyn-display);
+  font-weight: 700;
+  line-height: 0.8;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--g-line-strong);
+}
+.gyn .g-numeral--ink {
+  -webkit-text-stroke-color: var(--g-bone-line);
+}
+.gyn .g-numeral--on {
+  color: var(--g-accent);
+  -webkit-text-stroke-color: var(--g-accent);
+}
+
+/* ── Underlined form fields ───────────────────────────────────────────────
+   No boxes. Both other forms on the site are rounded filled inputs; here the
+   field is a baseline the value sits on. */
+.gyn .g-form {
+  color-scheme: dark;
+}
+.gyn .g-field {
+  width: 100%;
+  min-height: 46px;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--g-line-strong);
+  border-radius: 0;
+  padding: 10px 2px;
+  font-size: 0.95rem;
+  color: var(--g-text);
+  transition: border-color 0.2s ease;
+}
+.gyn .g-field::placeholder {
+  color: #6b7689;
+}
+.gyn .g-field:focus {
+  outline: none;
+  border-bottom-color: var(--g-accent);
+}
+.gyn .g-field option {
+  background: var(--g-raised);
+  color: var(--g-text);
+}
+
+/* Hairline grid overlay — the page's only texture. Squares, to match the
+   geometry, where .elite uses a dot field. */
+.gyn .g-grid-tex {
+  background-image: linear-gradient(var(--g-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--g-line) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* Phone-only card row, same contract as .elite's .swipe-row. */
+@media (max-width: 639.98px) {
+  .gyn .g-swipe {
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+  }
+  .gyn .g-swipe::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Staggered entrance for the hero, mirroring .elite's .rise/.dN pairing so the
+   markup reads the same way even though nothing else here does. */
+.gyn .g-rise {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: gyn-rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes gyn-rise {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.gyn .g-d1 { animation-delay: 0.06s; }
+.gyn .g-d2 { animation-delay: 0.16s; }
+.gyn .g-d3 { animation-delay: 0.26s; }
+.gyn .g-d4 { animation-delay: 0.36s; }
+.gyn .g-d5 { animation-delay: 0.46s; }
+
+/* ── Marquee ──────────────────────────────────────────────────────────────
+   A row that scrolls itself, forever. The track holds the same set of cards
+   twice and slides exactly one set's width, so the moment it wraps back to 0
+   the second set is sitting where the first one was and the seam is invisible.
+
+   That only holds if half the track is exactly one set: the gap between cards
+   is a margin on each card rather than a `gap` on the track, because a track
+   gap adds one extra gap between the two sets and nothing else, which puts the
+   loop out by half of it and shows as a small jump every lap.
+
+   Both edges are faded with a mask rather than covered by a gradient overlay,
+   so it keeps working whatever the band behind it is painted. Hover or tab
+   into the row and it holds still; under `prefers-reduced-motion` the blanket
+   rule at the end of this file stops it outright, so the row becomes a plain
+   horizontal scroller and the cards past the fold stay reachable. */
+.gyn .g-marquee {
+  --g-marquee-fade: clamp(1.25rem, 7vw, 7rem);
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 var(--g-marquee-fade),
+    #000 calc(100% - var(--g-marquee-fade)),
+    transparent
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 var(--g-marquee-fade),
+    #000 calc(100% - var(--g-marquee-fade)),
+    transparent
+  );
+}
+.gyn .g-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: gyn-marquee var(--g-marquee-duration, 48s) linear infinite;
+}
+.gyn .g-marquee:hover .g-marquee-track,
+.gyn .g-marquee:focus-within .g-marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes gyn-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gyn .g-marquee {
+    overflow-x: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
+
+/* ── Marked word ──────────────────────────────────────────────────────────
+   One word of the hero headline, highlighted. The pair is the same one
+   `.gyn ::selection` uses, so it reads as that word being marked rather than
+   as a new colour arriving in the palette.
+
+   `box-decoration-break: clone` so the padding is drawn on both halves if the
+   mark ever wraps a line, instead of only on the ends of the run. */
+.gyn .g-mark {
+  background-color: var(--g-accent);
+  color: #04140a;
+  padding: 0 0.12em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gyn .g-rise {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+  .gyn * {
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
+}

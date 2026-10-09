@@ -1,0 +1,15 @@
+
+> my-v0-project@0.1.0 dev
+> next dev --port 3000
+
+▲ Next.js 16.1.1 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.88.16:3000
+- Environments: .env
+
+✓ Starting...
+Creating turbopack project { dir: 'D:\\Grow medico LP\\Elite-minima', testMode: true }
+✓ Ready in 2.3s
+ GET /circumcision 200 in 2.9s (compile: 2.5s, render: 367ms)
+ GET /circumcision 200 in 128ms (compile: 50ms, render: 78ms)
+[?25h
