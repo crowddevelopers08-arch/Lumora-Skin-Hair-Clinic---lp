@@ -1,0 +1,65 @@
+@import "tailwindcss" source(none);
+@source "../../components/lumora";
+@source "./";
+
+/* ============ THEME — change only these per client ============ */
+@theme {
+  /* breakpoints mirror the original max-width queries (480 / 560 / 760 / 860) */
+  --breakpoint-*: initial;
+  --breakpoint-xs: 481px;
+  --breakpoint-sm: 561px;
+  --breakpoint-md: 761px;
+  --breakpoint-lg: 861px;
+
+  --color-brand: #141414;
+  --color-brand-dark: #000000;
+  --color-accent: #ffd21f;
+  --color-accent-dark: #f5c400;
+  --color-ink: #334155;
+  --color-muted: #5b6574;
+  --color-line: #eadfce;
+  --color-soft: #fff7f7;
+  --color-gold: #b8932f;
+
+  --shadow-card: 0 10px 30px rgba(15, 23, 42, 0.08);
+
+  --animate-fade: fade 0.25s;
+  --animate-pop: pop 0.3s;
+
+  @keyframes fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes pop {
+    from { transform: scale(0.94); opacity: 0; }
+    to { transform: none; opacity: 1; }
+  }
+}
+
+@theme {
+  --font-body: "Kurale", Georgia, serif;
+  --font-head: "Cinzel", serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 96px;
+  }
+  body {
+    font-family: var(--font-body);
+    color: var(--color-ink);
+    background: #ffffff;
+    line-height: 1.6;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-head);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: 0.01em;
+  }
+  h1 { font-size: clamp(28px, 5vw, 46px); }
+  h2 { font-size: clamp(24px, 3.6vw, 34px); margin-bottom: 10px; }
+  h3 { font-size: 18px; }
+  summary::-webkit-details-marker { display: none; }
+}

@@ -1,31 +1,30 @@
 // lib/sheets.ts
-// Pushes Elite Minima submissions to the Google Sheet via the Apps Script web
-// app (see eliteminima-apps-script.gs). One deployment serves both forms; the
-// `formType` field decides which tab the row lands in.
+// Pushes Lumora submissions to the Google Sheet via the Apps Script web app
+// (see lumora-apps-script.gs). One deployment serves both the landing page
+// lead form and client feedback; `formType` decides which tab the row lands in.
 //
 // Best-effort by design: callers should catch and record the failure without
 // blocking the visitor's submission.
 
-import { PILES_LEADS_FORM } from "./forms"
+import { LUMORA_LEADS_FORM } from "./forms"
 
-/** Tab names — these must match the ones in eliteminima-apps-script.gs. */
-export const LEADS_TAB = PILES_LEADS_FORM
+/** Lead tab — must match LEADS_TAB in lumora-apps-script.gs. */
+export const LEADS_TAB = LUMORA_LEADS_FORM
 /** Lumora feedback tab — must match FEEDBACK_TAB in lumora-apps-script.gs. */
 export const FEEDBACK_TAB = "Lumora Feedback"
 
 export interface SheetLead {
   name: string
   phone: string
-  email?: string | null
-  address?: string | null
   area?: string | null // the concern picked in the booking form
-  duration?: string | null // how long it has been
-  callDate?: string | null // preferred call date, ISO yyyy-mm-dd
-  callTime?: string | null // preferred call time, e.g. "3:30 PM"
-  branch?: string | null
   source?: string | null // utm_source or "direct"
   medium?: string | null
   campaign?: string | null
+  term?: string | null
+  content?: string | null
+  gclid?: string | null
+  fbclid?: string | null
+  formId?: string | null // which form on the page: form1 hero, form2 footer, form3 pop-up
   pageUrl?: string | null
   /** Which form this came from — see lib/forms.ts. Doubles as the sheet tab. */
   formName?: string | null
@@ -86,25 +85,23 @@ async function postToAppsScript(payload: Record<string, unknown>): Promise<Sheet
 }
 
 export async function sendToGoogleSheet(lead: SheetLead): Promise<SheetResult> {
+  const formName = lead.formName || LEADS_TAB
   return postToAppsScript({
     formType: "lead",
-    // Each form has its own tab. Unnamed submissions keep landing in the piles
-    // tab, which is where every lead went before there was a second form.
-    sheetTab: lead.formName || LEADS_TAB,
-    formName: lead.formName || LEADS_TAB,
+    sheetTab: formName,
+    formName,
     timestamp: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
-    name: lead.name,
-    phone: lead.phone.replace(/\D/g, ""),
-    email: lead.email || "",
-    address: lead.address || "",
+    name: lead.name.trim(),
+    phone: lead.phone.replace(/\D/g, "").replace(/^91(?=\d{10}$)/, ""),
     area: lead.area || "",
-    duration: lead.duration || "",
-    callDate: lead.callDate || "",
-    callTime: lead.callTime || "",
-    branch: lead.branch || "Elite Minima Clinic",
     source: lead.source || "direct",
     medium: lead.medium || "",
     campaign: lead.campaign || "",
+    term: lead.term || "",
+    content: lead.content || "",
+    gclid: lead.gclid || "",
+    fbclid: lead.fbclid || "",
+    formId: lead.formId || "",
     pageUrl: lead.pageUrl || "",
   })
 }

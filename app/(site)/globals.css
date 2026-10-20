@@ -1,0 +1,504 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+
+@custom-variant dark (&:is(.dark *));
+
+/* ============================================================
+   Styles for the /review and /client-feedback pages.
+   The Lumora palette lives under `.elite.lumora` below.
+   ============================================================ */
+:root {
+  --background: oklch(1 0 0); /* White background */
+  --foreground: oklch(0.19 0.024 260); /* Deep slate-navy ink #0E1626 */
+  --card: oklch(1 0 0); /* White card background */
+  --card-foreground: oklch(0.19 0.024 260);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.19 0.024 260);
+  --primary: oklch(0.47 0.126 152); /* Brand green #17743C */
+  --primary-foreground: oklch(1 0 0); /* White text on green */
+  --secondary: oklch(0.42 0.166 291); /* Brand purple #513E98 */
+  --secondary-foreground: oklch(1 0 0); /* White text on purple */
+  --muted: oklch(0.97 0.005 285); /* Faint lavender-grey surface */
+  --muted-foreground: oklch(0.51 0.024 260); /* AA muted text #5A6478 */
+  --accent: oklch(0.95 0.017 292); /* Lavender wash #F0ECFA */
+  --accent-foreground: oklch(0.35 0.14 291); /* Deep purple on wash */
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.92 0.006 275); /* Neutral hairline #E5E7EF */
+  --input: oklch(1 0 0);
+  --ring: oklch(0.47 0.126 152); /* Green focus ring */
+  --chart-1: oklch(0.47 0.126 152); /* green */
+  --chart-2: oklch(0.42 0.166 291); /* purple */
+  --chart-3: oklch(0.42 0.075 265); /* slate navy */
+  --chart-4: oklch(0.6 0.11 155); /* light green */
+  --chart-5: oklch(0.63 0.12 293); /* light purple */
+  --radius: 0.625rem;
+  --sidebar: oklch(0.98 0.004 285);
+  --sidebar-foreground: oklch(0.19 0.024 260);
+  --sidebar-primary: oklch(0.47 0.126 152);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.95 0.017 292);
+  --sidebar-accent-foreground: oklch(0.35 0.14 291);
+  --sidebar-border: oklch(0.92 0.006 275);
+  --sidebar-ring: oklch(0.47 0.126 152);
+}
+
+.dark {
+  --background: oklch(0.19 0.024 260); /* Deep slate-navy ink */
+  --foreground: oklch(1 0 0); /* White text */
+  --card: oklch(0.24 0.026 262);
+  --card-foreground: oklch(1 0 0);
+  --popover: oklch(0.24 0.026 262);
+  --popover-foreground: oklch(1 0 0);
+  --primary: oklch(0.62 0.132 152); /* Lifted green, readable on dark */
+  --primary-foreground: oklch(0.19 0.024 260);
+  --secondary: oklch(0.72 0.113 293); /* Lifted purple #B9A7E8 */
+  --secondary-foreground: oklch(0.19 0.024 260);
+  --muted: oklch(0.27 0.024 262);
+  --muted-foreground: oklch(0.74 0.014 275);
+  --accent: oklch(0.32 0.048 288);
+  --accent-foreground: oklch(0.86 0.06 293);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.32 0.022 265);
+  --input: oklch(0.24 0.026 262);
+  --ring: oklch(0.62 0.132 152);
+  --chart-1: oklch(0.62 0.132 152);
+  --chart-2: oklch(0.72 0.113 293);
+  --chart-3: oklch(0.66 0.078 265);
+  --chart-4: oklch(0.76 0.115 155);
+  --chart-5: oklch(0.83 0.075 293);
+  --sidebar: oklch(0.24 0.026 262);
+  --sidebar-foreground: oklch(1 0 0);
+  --sidebar-primary: oklch(0.62 0.132 152);
+  --sidebar-primary-foreground: oklch(0.19 0.024 260);
+  --sidebar-accent: oklch(0.32 0.048 288);
+  --sidebar-accent-foreground: oklch(0.86 0.06 293);
+  --sidebar-border: oklch(0.32 0.022 265);
+  --sidebar-ring: oklch(0.62 0.132 152);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-lato), sans-serif;
+  }
+}
+
+/* Added custom animations for advanced landing page effects */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.8s ease-out forwards;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.8s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.6s ease-out forwards;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animation-delay-200 {
+  animation-delay: 0.2s;
+}
+
+.animation-delay-400 {
+  animation-delay: 0.4s;
+}
+
+.animation-delay-600 {
+  animation-delay: 0.6s;
+}
+
+.animation-delay-800 {
+  animation-delay: 0.8s;
+}
+
+/* ============================================================
+   Scoped design system under .elite (Lato only, thin borders,
+   soft shadows). `.elite.lumora` re-skins it with Lumora's palette.
+   ============================================================ */
+.elite {
+  --e-ink: #0e1626;      /* slate-navy black, echoes the monogram's left stroke */
+  --e-ink-soft: #23304a;
+  --e-muted: #5a6478;    /* 5.9:1 on white — AA body text */
+  --e-line: #e5e7ef;
+  --e-line-soft: #eff0f6;
+  --e-paper: #ffffff;
+  --e-canvas: #f8f7fb;   /* faintest lavender, from the logo's ribbon wash */
+
+  /* Green — the wordmark colour. Primary actions, trust marks, icons. */
+  --e-green: #17743c;       /* 5.9:1 on white — AA */
+  --e-green-deep: #0f5a2d;  /* hover / heading green — 8.3:1 */
+  --e-green-soft: #e7f4ec;
+  --e-green-line: #c8e4d3;
+
+  /* Purple — the EM monogram colour. Accent surfaces, secondary emphasis. */
+  --e-purple: #513e98;      /* 8.4:1 on white — AA large + normal */
+  --e-purple-deep: #3a2b72;
+  --e-purple-soft: #f0ecfa;
+  --e-purple-line: #d9cff2;
+  --e-purple-light: #b9a7e8; /* for use on the dark ink footer */
+
+  /* Slate navy — the monogram's cool half. Charts, subtle dividers. */
+  --e-slate: #394b79;
+
+  --font-elite: var(--font-lato), sans-serif;
+
+  font-family: var(--font-elite);
+  background: var(--e-paper);
+  color: var(--e-ink);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+/* Lumora Skin & Hair Clinic — re-skins .elite with the logo's palette.
+   Applied alongside .elite (class="elite lumora"); it only swaps the tokens,
+   so every .elite rule keeps working. The green/purple names are kept so the
+   shared components need no changes: "green" is the primary brown, "purple"
+   is the caramel accent (stars, rating chip).
+   Sampled from the Lumora logo: espresso #412519 · cream #f6e9da. */
+.elite.lumora {
+  --e-ink: #2e1a11;
+  --e-ink-soft: #4a2e20;
+  --e-muted: #6e5a4d;    /* ~6:1 on cream — AA body text */
+  --e-line: #e6d6c5;
+  --e-line-soft: #efe3d6;
+  --e-paper: #f7ecdf;    /* logo background cream, so the jpeg blends in */
+  --e-canvas: #fdf8f2;
+
+  --e-green: #6b4430;       /* primary brown — ~7.5:1 on cream */
+  --e-green-deep: #412519;  /* espresso, the wordmark colour */
+  --e-green-soft: #f1e2d2;
+  --e-green-line: #dcc3ab;
+
+  --e-purple: #b98348;      /* caramel accent, for stars */
+  --e-purple-deep: #7a4f26;
+  --e-purple-soft: #f6e7d4;
+  --e-purple-line: #e3c9a8;
+  --e-purple-light: #dcb98e;
+
+  --e-slate: #8a6a55;
+}
+
+.elite h1,
+.elite h2,
+.elite h3,
+.elite .display {
+  font-family: var(--font-elite);
+  letter-spacing: -0.025em;
+  color: var(--e-ink);
+  font-weight: 700;
+}
+.elite h1 {
+  font-size: clamp(2rem, 1.25rem + 2.6vw, 3rem);
+  line-height: 1.15;
+}
+.elite h2 {
+  font-size: clamp(1.75rem, 1.2rem + 1.9vw, 2.5rem);
+  line-height: 1.2;
+}
+.elite h3 {
+  font-weight: 600;
+  line-height: 1.3;
+}
+.elite input,
+.elite select,
+.elite textarea {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.elite footer {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+.elite :focus-visible {
+  outline: 2px solid var(--e-green);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+.elite ::selection {
+  background: var(--e-green-soft);
+  color: var(--e-green-deep);
+}
+
+/* Anchor landing offset — single source of truth for nav routing.
+   The header is sticky (80px desktop / 68px mobile), so anything jumped to from
+   the navbar has to clear it. This covers the paths Lenis never sees: a hash URL
+   opened directly (/#faq), a reduced-motion visit, and any no-JS fallback.
+   SmoothScroll.tsx reads this same value back so the two can't drift apart. */
+.elite section[id],
+.elite #book {
+  scroll-margin-top: 6rem;
+}
+
+/* eyebrow / section kicker */
+.elite .kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--e-green-deep);
+}
+/* the dash runs green → purple, a small echo of the monogram's gradient */
+.elite .kicker::before {
+  content: "";
+  width: 20px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--e-green), var(--e-purple));
+}
+
+/* Section heading underline — the stroke draws itself on once the enclosing
+   <Reveal> flips to .in, holds, wipes off to the right, then repeats forever.
+   The loop starts on reveal rather than on load, so a heading never animates
+   before the reader has reached it. */
+.elite .title-underline {
+  clip-path: inset(0 100% 0 0);
+}
+.elite .reveal.in .title-underline {
+  animation: elite-underline-loop 3.4s 0.25s infinite;
+}
+/* the hero enters via .rise on load, not via the IntersectionObserver's .in,
+   so it needs its own trigger — only the start delay differs */
+.elite .rise .title-underline {
+  animation: elite-underline-loop 3.4s 0.55s infinite;
+}
+@keyframes elite-underline-loop {
+  /* draw on, left → right (0.88s) */
+  0% {
+    clip-path: inset(0 100% 0 0);
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  /* fully drawn, then held for ~1.5s */
+  26%,
+  70% {
+    clip-path: inset(0 0 0 0);
+    animation-timing-function: cubic-bezier(0.55, 0, 0.85, 0.3);
+  }
+  /* wipe off the way it came in, then a short beat of nothing. Both this state
+     and 0% are invisible, so the wrap back to the start is never seen. */
+  92%,
+  100% {
+    clip-path: inset(0 0 0 100%);
+  }
+}
+
+/* primary + ghost buttons */
+.elite .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: clamp(0.9375rem, 0.9rem + 0.16vw, 1rem);
+  line-height: 1;
+  padding: 14px 28px;
+  transition: transform 0.2s ease, box-shadow 0.25s ease, background 0.25s ease,
+    color 0.2s ease, border-color 0.2s ease;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+}
+.elite .btn-primary {
+  background: var(--e-green);
+  color: #fff;
+  box-shadow: 0 12px 28px -12px rgba(23, 116, 60, 0.5);
+}
+.elite .btn-primary:hover {
+  background: var(--e-green-deep);
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px -14px rgba(23, 116, 60, 0.6);
+}
+.elite .btn-purple {
+  background: var(--e-purple);
+  color: #fff;
+  box-shadow: 0 12px 28px -12px rgba(81, 62, 152, 0.5);
+}
+.elite .btn-purple:hover {
+  background: var(--e-purple-deep);
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px -14px rgba(81, 62, 152, 0.6);
+}
+.elite .btn-ghost {
+  background: #fff;
+  color: var(--e-ink);
+  border-color: var(--e-line);
+}
+.elite .btn-ghost:hover {
+  border-color: var(--e-green);
+  color: var(--e-green-deep);
+  transform: translateY(-2px);
+}
+
+/* flat, bordered card — no skeuomorphic gradients */
+.elite .card {
+  background: #fff;
+  border: 1px solid var(--e-line);
+  border-radius: 20px;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.3s ease, border-color 0.25s ease;
+}
+.elite .card:hover {
+  transform: translateY(-4px);
+  border-color: var(--e-green-line);
+  box-shadow: 0 24px 44px -30px rgba(14, 22, 38, 0.25);
+}
+
+/* marquee strip — the track is rendered twice, so wrapping at -50% loops seamlessly */
+.elite .marquee {
+  display: flex;
+  width: max-content;
+  animation: elite-marquee var(--marquee-duration, 30s) linear infinite;
+}
+.elite .marquee:hover,
+.elite .marquee:focus-within {
+  animation-play-state: paused;
+}
+@keyframes elite-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* the rail clips the over-wide track; without this the fade mask below would
+   tile across the overflow instead of sitting on the visible edges */
+.elite .marquee-rail {
+  overflow: hidden;
+}
+
+/* soft dissolve at both ends of a marquee rail, instead of a hard clip */
+.elite .marquee-fade {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 4%, #000 94%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* the animation is switched off above, so hand scrolling back to the reader
+     and drop the duplicate track that only existed to make the loop seamless */
+  .elite .marquee-rail {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  .elite .marquee-fade {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .elite .marquee-dup {
+    display: none;
+  }
+}
+

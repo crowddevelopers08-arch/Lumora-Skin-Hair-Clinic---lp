@@ -1,25 +1,55 @@
 // lib/telecrm.ts
-// Pushes Elite Minima submissions to TeleCRM — booking leads from the landing
-// page form, and client feedback from /client-feedback. Best-effort: callers
-// should catch and record the failure without blocking the submission.
+// One generic TeleCRM sender, used by both routes:
+//   - app/api/leads     → requestType "consultation" (landing page booking form)
+//   - app/api/feedback  → requestType "feedback"     (/client-feedback, 1–3 stars)
+// Both land in the same TeleCRM inbox and are told apart by Lead Request Type,
+// PageName and FormName. Callers run this beside the Google Sheet write and
+// treat a failure as non-fatal.
 
-export interface TeleCRMLead {
+const BRANCH = "Lumora Skin and Hair"
+
+/** Site root, for leads that arrive without a page URL. */
+export const SITE_URL = `${(process.env.NEXT_PUBLIC_SITE_URL || "https://lumoraskinandhair.com").replace(/\/$/, "")}/`
+
+/** TeleCRM PageName per form — how the team filters the inbox. */
+export const TELECRM_PAGES = {
+  lead: "lumora-skin-hair-lp",
+  feedback: "lumora-client-feedback",
+} as const
+
+/**
+ * Normalises an Indian mobile to its 10 digits: strips spaces, dashes,
+ * brackets, and a +91 / 91 / 0 prefix. Returns "" when nothing usable is left,
+ * so callers can validate the result with /^[6-9]\d{9}$/.
+ */
+export function normalizeIndianPhone(raw: string): string {
+  let d = String(raw ?? "").replace(/\D/g, "")
+  if (d.length === 12 && d.startsWith("91")) d = d.slice(2)
+  if (d.length === 11 && d.startsWith("0")) d = d.slice(1)
+  return d
+}
+
+export function isValidIndianPhone(raw: string): boolean {
+  return /^[6-9]\d{9}$/.test(normalizeIndianPhone(raw))
+}
+
+export interface TeleCRMInput {
   name: string
   phone: string
   email?: string | null
-  address?: string | null
-  area?: string | null // hair concern / symptom
-  duration?: string | null // how long it has been
-  callDate?: string | null // preferred call date, ISO yyyy-mm-dd
-  callTime?: string | null // preferred call time, e.g. "3:30 PM"
-  branch?: string | null
-  source?: string | null // utm_source or "direct"
-  medium?: string | null
-  campaign?: string | null
-  pageUrl?: string | null
-  /** Which form this came from — see lib/forms.ts. Lands in TeleCRM's FormName
-   *  so the two landing pages can be filtered apart in the same inbox. */
-  formName?: string | null
+  /** One-line summary, shown first in the lead's notes. */
+  message: string
+  requestType: "consultation" | "feedback"
+  /** TELECRM_PAGES.lead / .feedback */
+  pageName: string
+  /** Label shown in TeleCRM's FormName — see lib/forms.ts. */
+  formName: string
+  /** The live URL the form was submitted from. */
+  sourceUrl?: string | null
+  /** Each becomes its own SYSTEM_NOTE on the lead, in this order. */
+  notes?: string[]
+  /** Extra TeleCRM custom fields (Concern, Campaign, Rating…). Empty values are dropped. */
+  fields?: Record<string, string | number | null | undefined>
 }
 
 export interface TeleCRMResult {
@@ -28,157 +58,26 @@ export interface TeleCRMResult {
   raw?: unknown
 }
 
-const FALLBACK_PAGE = "https://eliteminima.in/"
-
-export async function sendToTeleCRM(lead: TeleCRMLead): Promise<TeleCRMResult> {
+export async function sendToTeleCRM(input: TeleCRMInput): Promise<TeleCRMResult> {
   const endpoint = process.env.TELECRM_API_URL
-  if (!endpoint) {
-    throw new Error("TELECRM_API_URL environment variable is not set")
-  }
+  if (!endpoint) throw new Error("TELECRM_API_URL environment variable is not set")
+  if (!process.env.TELECRM_API_KEY) throw new Error("TELECRM_API_KEY environment variable is not set")
 
-  const controller = new AbortController()
-  const timeout = setTimeout(() => controller.abort(), 15000)
-
-  const sourceURL = lead.pageUrl || FALLBACK_PAGE
-  const branch = lead.branch || "Elite Minima Clinic"
-  /* Unnamed submissions keep the label every lead carried before there was a
-     second form, so nothing already in the CRM changes meaning. */
-  const formName = lead.formName || "Elite Minima LP Leads"
+  const sourceURL = input.sourceUrl || SITE_URL
+  const extra = Object.fromEntries(
+    Object.entries(input.fields ?? {}).filter(([, v]) => v !== undefined && v !== null && v !== ""),
+  )
 
   const payload = {
     fields: {
       Id: "",
-      name: lead.name,
-      phone: lead.phone.replace(/\D/g, ""),
-      Country: "",
-      LeadID: "",
-      CreatedOn: new Date().toLocaleString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-        hour: "numeric",
-        minute: "2-digit",
-        hour12: true,
-      }),
-      "Lead Stage": "",
-      "Lead Status": "new",
-      "Lead Request Type": "consultation",
-      PageName: sourceURL,
-      Source_URL: sourceURL,
-      Branch: branch,
-      Email: lead.email || "",
-      Address: lead.address || "",
-      Area_of_Pain: lead.area || "",
-      Duration: lead.duration || "",
-      Preferred_Call_Date: lead.callDate || "",
-      Preferred_Call_Time: lead.callTime || "",
-      FormName: formName,
-      Lead_Source: lead.source || "direct",
-      Campaign: lead.campaign || "",
-      Medium: lead.medium || "",
-      Source: sourceURL,
-    },
-    actions: [
-      { type: "SYSTEM_NOTE", text: `Form: ${formName}` },
-      { type: "SYSTEM_NOTE", text: `Branch: ${branch}` },
-      { type: "SYSTEM_NOTE", text: `Email: ${lead.email || "Not specified"}` },
-      { type: "SYSTEM_NOTE", text: `Address: ${lead.address || "Not specified"}` },
-      { type: "SYSTEM_NOTE", text: `Concern: ${lead.area || "Not specified"}` },
-      { type: "SYSTEM_NOTE", text: `Duration: ${lead.duration || "Not specified"}` },
-      {
-        type: "SYSTEM_NOTE",
-        text: `Preferred callback: ${[lead.callDate, lead.callTime].filter(Boolean).join(" at ") || "Not specified"}`,
-      },
-      { type: "SYSTEM_NOTE", text: `Campaign source: ${lead.source || "direct"}` },
-      { type: "SYSTEM_NOTE", text: `Campaign: ${lead.campaign || "Not specified"}` },
-      { type: "SYSTEM_NOTE", text: `Landing page: ${sourceURL}` },
-    ],
-  }
-
-  try {
-    const response = await fetch(endpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.TELECRM_API_KEY}`,
-        "X-Client-ID": "nextjs-website-integration",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(payload),
-      signal: controller.signal,
-    })
-
-    // TeleCRM commonly returns 204 No Content on success.
-    if (response.status === 204) {
-      return { synced: true, telecrmId: null }
-    }
-
-    const responseText = await response.text()
-
-    if (
-      responseText.trim().startsWith("<!DOCTYPE") ||
-      responseText.trim().startsWith("<html") ||
-      responseText.includes("<!DOCTYPE html>")
-    ) {
-      throw new Error("TeleCRM returned an HTML response instead of JSON")
-    }
-
-    const data = responseText ? JSON.parse(responseText) : {}
-    if (!response.ok) {
-      throw new Error(data.message || `HTTP ${response.status} from TeleCRM`)
-    }
-
-    return {
-      synced: true,
-      telecrmId: data?.id || data?.leadId || null,
-      raw: data,
-    }
-  } finally {
-    clearTimeout(timeout)
-  }
-}
-
-/* ── Client feedback ─────────────────────────────────────────────────────── */
-
-export interface TeleCRMFeedback {
-  name: string
-  email: string
-  phone: string
-  suggestions: string
-  pageUrl?: string | null
-  /** Star score from /review, 1–5. 0 when they skipped the rating step. */
-  rating?: number | null
-}
-
-/**
- * Feedback lands in the same TeleCRM inbox as a lead, tagged so it can be
- * filtered apart: Lead Request Type "feedback" and a distinct FormName. It is
- * still worth pushing — someone unhappy enough to write in is the contact the
- * clinic most needs to see.
- */
-export async function sendFeedbackToTeleCRM(feedback: TeleCRMFeedback): Promise<TeleCRMResult> {
-  const endpoint = process.env.TELECRM_API_URL
-  if (!endpoint) {
-    throw new Error("TELECRM_API_URL environment variable is not set")
-  }
-
-  const controller = new AbortController()
-  const timeout = setTimeout(() => controller.abort(), 15000)
-
-  const sourceURL = feedback.pageUrl || `${FALLBACK_PAGE}client-feedback`
-  const suggestions = feedback.suggestions.trim()
-  const rating = feedback.rating || 0
-  const ratingLabel = rating ? `${rating}/5` : "Not rated"
-
-  const payload = {
-    fields: {
-      Id: "",
-      name: feedback.name.trim(),
-      phone: feedback.phone.replace(/\D/g, ""),
-      Email: feedback.email.trim(),
+      name: input.name.trim(),
+      phone: normalizeIndianPhone(input.phone),
+      Email: input.email?.trim() || "",
       Country: "India",
       LeadID: "",
       CreatedOn: new Date().toLocaleString("en-US", {
+        timeZone: "Asia/Kolkata",
         month: "short",
         day: "numeric",
         year: "numeric",
@@ -188,24 +87,21 @@ export async function sendFeedbackToTeleCRM(feedback: TeleCRMFeedback): Promise<
       }),
       "Lead Stage": "",
       "Lead Status": "new",
-      "Lead Request Type": "feedback",
-      PageName: sourceURL,
+      "Lead Request Type": input.requestType,
+      PageName: input.pageName,
       Source_URL: sourceURL,
-      Branch: "Elite Minima Clinic",
-      Feedback: suggestions,
-      Rating: rating || "",
-      FormName: "Elite Minima Client Feedback",
-      Lead_Source: "client-feedback",
       Source: sourceURL,
+      Branch: BRANCH,
+      FormName: input.formName,
+      ...extra,
     },
-    actions: [
-      { type: "SYSTEM_NOTE", text: "Lead Source: Elite Minima client feedback form" },
-      { type: "SYSTEM_NOTE", text: `Star rating: ${ratingLabel}` },
-      { type: "SYSTEM_NOTE", text: `Feedback: ${suggestions}` },
-      { type: "SYSTEM_NOTE", text: `Email: ${feedback.email.trim()}` },
-      { type: "SYSTEM_NOTE", text: `Submitted from: ${sourceURL}` },
-    ],
+    actions: [input.message, ...(input.notes ?? [])]
+      .filter(Boolean)
+      .map((text) => ({ type: "SYSTEM_NOTE", text })),
   }
+
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), 15000)
 
   try {
     const response = await fetch(endpoint, {
@@ -218,32 +114,26 @@ export async function sendFeedbackToTeleCRM(feedback: TeleCRMFeedback): Promise<
       },
       body: JSON.stringify(payload),
       signal: controller.signal,
+      cache: "no-store",
     })
 
-    if (response.status === 204) {
-      return { synced: true, telecrmId: null }
+    // TeleCRM commonly returns 204 No Content on success.
+    if (response.status === 204) return { synced: true, telecrmId: null }
+
+    const text = await response.text()
+    if (/^\s*<(!DOCTYPE|html)/i.test(text)) {
+      throw new Error(`TeleCRM returned an HTML page (HTTP ${response.status}) — check TELECRM_API_URL`)
     }
 
-    const responseText = await response.text()
-
-    if (
-      responseText.trim().startsWith("<!DOCTYPE") ||
-      responseText.trim().startsWith("<html") ||
-      responseText.includes("<!DOCTYPE html>")
-    ) {
-      throw new Error("TeleCRM returned an HTML response instead of JSON")
+    let data: { id?: string; leadId?: string; message?: string; error?: string } = {}
+    try {
+      data = text ? JSON.parse(text) : {}
+    } catch {
+      if (!response.ok) throw new Error(`HTTP ${response.status} from TeleCRM: ${text.slice(0, 200)}`)
     }
+    if (!response.ok) throw new Error(data.message || data.error || `HTTP ${response.status} from TeleCRM`)
 
-    const data = responseText ? JSON.parse(responseText) : {}
-    if (!response.ok) {
-      throw new Error(data.message || `HTTP ${response.status} from TeleCRM`)
-    }
-
-    return {
-      synced: true,
-      telecrmId: data?.id || data?.leadId || null,
-      raw: data,
-    }
+    return { synced: true, telecrmId: data.id || data.leadId || null, raw: data }
   } finally {
     clearTimeout(timeout)
   }

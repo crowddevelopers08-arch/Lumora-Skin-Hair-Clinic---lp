@@ -8,18 +8,9 @@
 //
 // Safe to import from client components: no dependencies, no env access.
 //
-// ⚠️ Adding a form here means adding the matching tab in
-// eliteminima-apps-script.gs (LEAD_TABS) and re-deploying it, or its rows fall
-// back to the piles tab.
+// NOTE: Adding a form here means adding the matching tab in
+// lumora-apps-script.gs and re-deploying it.
 
-/** The original landing page form (/), which sells piles treatment. */
-export const PILES_LEADS_FORM = "Elite Minima Piles Leads"
-
-/** The general page form (/general) — piles, circumcision and gynecomastia. */
-export const GENERAL_LEADS_FORM = "Elite Minima General Leads"
-
-/** The gynecomastia page form (/gynecomastia) — male breast reduction only. */
-export const GYNECOMASTIA_LEADS_FORM = "Elite Minima Gynecomastia Leads"
-
-/** The dedicated circumcision page form (/circumcision). */
-export const CIRCUMCISION_LEADS_FORM = "Elite Minima Circumcision Leads"
+/** The Lumora landing page form (/). Must match LEADS_TAB in
+ *  lumora-apps-script.gs and tracking.formName in components/lumora/config.js. */
+export const LUMORA_LEADS_FORM = "Lumora LP Leads"
