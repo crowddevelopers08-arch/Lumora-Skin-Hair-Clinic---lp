@@ -1,7 +1,6 @@
 import type React from "react"
 import type { Metadata, Viewport } from "next"
 import Script from "next/script"
-import { AnalyticsHead, AnalyticsNoScript } from "@/components/Analytics"
 import "./lumora.css"
 
 // Root layout for the Lumora pages (/, /thank-you, /privacy-policy, /terms-and-conditions),
@@ -31,7 +30,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </Script>
         {/* End Google Tag Manager */}
 
-        <AnalyticsHead />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
@@ -51,7 +49,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         </noscript>
         {/* End Google Tag Manager (noscript) */}
 
-        <AnalyticsNoScript />
         {children}
       </body>
     </html>

@@ -1,7 +1,6 @@
 import type React from "react"
 import type { Metadata, Viewport } from "next"
 import { Lato } from "next/font/google"
-import { AnalyticsHead, AnalyticsNoScript } from "@/components/Analytics"
 import "./globals.css"
 
 // Lato is the site typeface, exposed as --font-lato.
@@ -52,11 +51,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`antialiased ${lato.variable}`}>
-      <head>
-        <AnalyticsHead />
-      </head>
       <body>
-        <AnalyticsNoScript />
         {children}
       </body>
     </html>
